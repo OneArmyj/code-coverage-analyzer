@@ -1,0 +1,24 @@
+.visualizer-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.visualizer-container-top {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+}
+
+.visualizer-filter-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.sort-coverage-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}

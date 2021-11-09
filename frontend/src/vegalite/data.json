@@ -1,0 +1,38 @@
+{
+    "data": {
+        "values": [
+            {
+                "Module": "AcadA.arx",
+                "Coverage": 30.5
+            },
+            {
+                "Module": "AcadB.arx",
+                "Coverage": 10.5
+            },
+            {
+                "Module": "AcadC.arx",
+                "Coverage": 20.5
+            },
+            {
+                "Module": "AcadD.dbx",
+                "Coverage": 70
+            },
+            {
+                "Module": "AcadE.dbx",
+                "Coverage": 55.6
+            },
+            {
+                "Module": "AcadF.crx",
+                "Coverage": 5.8
+            },
+            {
+                "Module": "AcadG.dll",
+                "Coverage": 20.5
+            },
+            {
+                "Module": "AcadH.dll",
+                "Coverage": 40.5
+            }
+        ]
+    }
+}
