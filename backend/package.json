@@ -1,14 +1,17 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "A code coverage visualizer developed for AutoCAD products",
   "main": "index.js",
   "scripts": {
-    "devStart": "nodemon server.js"
+    "server": "nodemon -- exec babel-node server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/node": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mongoose": "^6.0.12"

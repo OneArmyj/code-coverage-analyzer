@@ -1,0 +1,24 @@
+GET http://localhost:5000/product
+
+###
+GET http://localhost:5000/product/618507d901f78033bf11f1ad
+
+###
+POST http://localhost:5000/product
+Content-Type: application/json
+
+{
+    "name": "ACAMEP",
+    "buildId": "DST_H036" 
+}
+
+###
+DELETE http://localhost:5000/product/618507d901f78033bf11f1ad
+
+###
+PATCH  http://localhost:5000/product/618507d901f78033bf11f1ad
+Content-Type: application/json
+
+{
+    "buildId": "DST_H033" 
+}

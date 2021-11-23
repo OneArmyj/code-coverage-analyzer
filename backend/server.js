@@ -1,27 +1,24 @@
+const express = require("express")
+const mongoose = require("mongoose")
+const cors = require("cors")
+
 require('dotenv').config()
 
-const express = require('express')
 const app = express()
-const mongoose = require('mongoose')
 const port = process.env.PORT
-const cors = require('cors')
-app.use(cors())
 
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
 const db = mongoose.connection
 db.on('error', (error) => console.log(error))
 db.once('open', () => console.log('Connected to Database'))
 
+app.use(cors())
 app.use(express.json())
 
-const coveragedataRouter = require('./routes/coveragedatas')
+const productRouter = require('./routes/product')
+const featureRouter = require('./routes/feature')
 
-app.use('/coveragedata', coveragedataRouter)
+app.use('/product', productRouter)
+app.use('/feature', featureRouter)
 
-app.listen(port, () => { console.log(`Currently listening on port ${port}`) })
-
-/*
-NOTES
-- Import REST Client plugin for .rest/.http api calls testing (route.rest)
--
-*/
+app.listen(port || 3001, () => { console.log(`Currently listening on port ${port}`) })
