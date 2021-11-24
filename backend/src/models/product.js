@@ -11,7 +11,11 @@ const productSchema = new Schema({
         required: true
     },
     listOfFeatures: {
-        type: [{ type: Schema.Types.ObjectId, ref: "Feature" }],
+        // list of Feature's ObjectId
+        type: [{
+            type: Schema.Types.ObjectId,
+            ref: "Feature"
+        }],
         default: []
     },
     date: {

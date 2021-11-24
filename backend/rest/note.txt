@@ -1,1 +1,0 @@
-Install REST Client Plugin on VSCode and have files with .rest extension to test API calls

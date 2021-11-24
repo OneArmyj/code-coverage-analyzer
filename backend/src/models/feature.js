@@ -2,13 +2,18 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const featureSchema = new Schema({
+    product: {
+        type: Schema.Types.ObjectId,
+        ref: "Product",
+        required: true
+    },
     name: {
         type: String,
         required: true
     },
-    listOfTestcases: {
-        type: [{ type: Schema.Types.ObjectId, ref: "Testcase" }],
-        default: []
+    feature_coverage: {
+        type: Number,
+        default: 0
     }
 })
 

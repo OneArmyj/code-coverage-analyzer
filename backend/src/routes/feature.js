@@ -1,11 +1,14 @@
+import { statusCodes } from "../utils/httpResponses"
+import { checkProductExist, checkFeatureExist } from "../utils/helper"
+
 const express = require('express')
 const router = express.Router()
 const Feature = require('../models/feature')
 
-// getting all feature 
-router.get('/', async (req, res) => {
+// getting all features of a product
+router.get('/:product_id', checkProductExist, async (req, res) => {
     try {
-        const features = await Feature.find()
+        const features = await Feature.find({ product: res.product._id })
         res.json(features)
     } catch (err) {
         res.status(500).json({ message: err.message })
@@ -20,7 +23,8 @@ router.get('/:id', getFeature, (req, res) => {
 // creating one feature
 router.post('/', async (req, res) => {
     const feature = new Feature({
-        name: req.body.name
+        product: req.body.product,
+        name: req.body.name,
     })
 
     try {

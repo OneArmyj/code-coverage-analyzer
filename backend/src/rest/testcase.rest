@@ -1,0 +1,28 @@
+GET http://localhost:5001/testcase
+
+###
+GET http://localhost:5001/testcase/618507d901f78033bf11f1ad
+
+###
+POST http://localhost:5001/testcase
+Content-Type: application/json
+
+{
+    "product_id": "619dc1a99864ee856ec1cef2",
+    "name": "TestcaseA",
+    "coverageByFeatures": {
+        "Wall": 50,
+        "Door": 30
+    }
+}
+
+###
+DELETE http://localhost:5001/testcase/619dc4e9a0de1be7bea13e17
+
+###
+PATCH  http://localhost:5001/testcase/618507d901f78033bf11f1ad
+Content-Type: application/json
+
+{
+    "buildId": "DST_H033" 
+}

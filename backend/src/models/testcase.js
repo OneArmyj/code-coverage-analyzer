@@ -2,6 +2,10 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const testcaseSchema = new Schema({
+    product_id: {
+        type: String,
+        required: true
+    },
     name: {
         type: String,
         required: true
@@ -10,8 +14,9 @@ const testcaseSchema = new Schema({
         type: String,
         default: ""
     },
-    coverage: {
-        type: Number,
+    coverageByFeatures: {
+        // Object mappings of "Feature Name" : CoverageOfFeature
+        type: Object,
         required: true
     }
 })
