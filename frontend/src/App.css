@@ -31,6 +31,7 @@
   flex-direction: column;
   align-items: center;
   color: #282c34;
+  overflow-x: scroll;
 }
 
 .App-link {
