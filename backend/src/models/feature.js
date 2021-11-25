@@ -1,4 +1,5 @@
-const mongoose = require('mongoose')
+import mongoose from "mongoose"
+
 const Schema = mongoose.Schema
 
 const featureSchema = new Schema({
@@ -18,4 +19,4 @@ const featureSchema = new Schema({
 })
 
 const Feature = mongoose.model('Feature', featureSchema)
-module.exports = Feature
+export default Feature

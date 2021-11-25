@@ -1,15 +1,15 @@
 import { statusCodes } from "./httpResponses"
+import models from "../models/index"
 
-const Product = require("../models/product")
-const Feature = require("../models/feature")
+const { Product, Feature } = models
 
 // Checks if a product with the corresponding product_id exists in DB
+// If exist, store in res.product
 export async function checkProductExist(req, res, next) {
     let product
     try {
-        product = await (Product.findById(req.params.product_id))
+        product = await Product.findById(req.params.product_id)
         if (product == null) {
-            // 404, item not found
             return res.status(statusCodes.notFound).json({ message: "Cannot find product data" })
         }
     } catch (err) {
@@ -20,12 +20,12 @@ export async function checkProductExist(req, res, next) {
 }
 
 // Checks if a feature with the corresponding feature_id exists in DB
+// If exist, store in res.feature
 export async function checkFeatureExist(req, res, next) {
     let feature
     try {
-        feature = await (Feature.findById(req.params.feature_id))
+        feature = await Feature.findById(req.params.feature_id)
         if (feature == null) {
-            // 404, item not found
             return res.status(statusCodes.notFound).json({ message: "Cannot find feature data" })
         }
     } catch (err) {

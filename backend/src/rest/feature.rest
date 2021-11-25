@@ -1,24 +1,25 @@
-GET http://localhost:5001/feature/619e412f5fae31bf70e6c669
+GET http://localhost:5001/feature
 
 ###
-GET http://localhost:5001/feature/619dc1a99864ee856ec1cef2
+GET http://localhost:5001/feature/619e412f5fae31bf70e6c66a
 
 ###
-POST http://localhost:5001/feature
+POST http://localhost:5001/feature/619f222d4a50b364d25fab4f
 Content-Type: application/json
 
 {
-    "product": "619e3862384c308c94b2890b",
-    "name": "Door"
+    "name": "Window"
 }
 
 ###
-DELETE http://localhost:5001/feature/619dc1a99864ee856ec1cef2
+DELETE http://localhost:5001/feature/product/619f222d4a50b364d25fab4f
+###
+DELETE http://localhost:5001/feature/619f222d4a50b364d25fab50
 
 ###
-PATCH  http://localhost:5001/feature/619dc1a99864ee856ec1cef2
+PATCH  http://localhost:5001/feature/619f183bcc7cd74a05cdf97e
 Content-Type: application/json
 
 {
-    "listOfFeatures": ["Wall", "Door", "Room", "Window", "Roof", "Floor"] 
+    "name": "Door" 
 }

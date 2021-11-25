@@ -1,6 +1,7 @@
-const express = require("express")
-const mongoose = require("mongoose")
-const cors = require("cors")
+import express from "express"
+import mongoose from "mongoose"
+import cors from "cors"
+import routes from "./routes"
 
 require('dotenv').config()
 
@@ -15,12 +16,8 @@ db.once('open', () => console.log('Connected to Database'))
 app.use(cors())
 app.use(express.json())
 
-const productRouter = require('./routes/product')
-const featureRouter = require('./routes/feature')
-const testcaseRouter = require('./routes/testcase')
-
-app.use('/product', productRouter)
-app.use('/feature', featureRouter)
-app.use('/testcase', testcaseRouter)
+app.use('/product', routes.productRouter)
+app.use('/feature', routes.featureRouter)
+//app.use('/testcase', testcaseRouter)
 
 app.listen(port || 3001, () => { console.log(`Currently listening on port ${port}`) })

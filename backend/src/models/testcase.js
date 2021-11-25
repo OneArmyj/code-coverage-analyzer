@@ -1,4 +1,5 @@
-const mongoose = require('mongoose')
+import mongoose from "mongoose"
+
 const Schema = mongoose.Schema
 
 const testcaseSchema = new Schema({
@@ -22,4 +23,4 @@ const testcaseSchema = new Schema({
 })
 
 const Testcase = mongoose.model('Testcase', testcaseSchema)
-module.exports = Testcase
+export default Testcase
