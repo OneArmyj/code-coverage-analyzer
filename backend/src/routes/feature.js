@@ -4,7 +4,7 @@ import { statusCodes } from "../utils/httpResponses"
 import { checkProductExist, checkFeatureExist } from "../utils/helper"
 
 const router = Router()
-const { Product, Feature } = models
+const { Product, Feature, Testcase } = models
 
 // GET all features in DB
 router.get('/', async (req, res) => {
@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
 // GET all features of a product
 router.get('/product/:product_id', checkProductExist, async (req, res) => {
     try {
-        const features = await Feature.find({ product: res.product._id })
+        const features = await Feature.find({ product_id: res.product._id })
         res.status(statusCodes.ok).json(features)
     } catch (err) {
         res.status(statusCodes.internalServerError).json({ message: err.message })
@@ -35,7 +35,7 @@ router.get('/:feature_id', checkFeatureExist, async (req, res) => {
 router.post('/:product_id', checkProductExist, async (req, res) => {
     // Need check if any existing testcase covered the feature, if so compute feature_coverage
     const feature = new Feature({
-        product: req.params.product_id,
+        product_id: req.params.product_id,
         name: req.body.name,
     })
     res.product.listOfFeatures.push(feature._id)
@@ -69,7 +69,7 @@ router.patch('/:feature_id', checkFeatureExist, async (req, res) => {
 router.delete('/product/:product_id', checkProductExist, async (req, res) => {
     try {
         await Product.updateOne({ _id: req.params.product_id }, { $set: { listOfFeatures: [] } })
-        await Feature.deleteMany({ product: req.params.product_id })
+        await Feature.deleteMany({ product_id: req.params.product_id })
         res.status(statusCodes.ok).json({ message: "Deleted all feature data related to the specific Product" })
     } catch (err) {
         res.status(statusCodes.internalServerError).json({ message: err.message })
@@ -79,7 +79,7 @@ router.delete('/product/:product_id', checkProductExist, async (req, res) => {
 // DELETE one feature, need delete it from product as well
 router.delete('/:feature_id', checkFeatureExist, async (req, res) => {
     try {
-        const product = await Product.findById(res.feature.product)
+        const product = await Product.findById(res.feature.product_id)
         product.listOfFeatures = product.listOfFeatures.filter(x => x != req.params.feature_id)
         await product.save()
         await res.feature.remove()

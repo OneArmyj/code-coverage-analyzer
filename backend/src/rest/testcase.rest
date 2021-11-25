@@ -1,28 +1,47 @@
-GET http://localhost:5001/testcase
+GET http://localhost:5001/testcase/product/619f4cea44686c0bb92a6d14
 
 ###
-GET http://localhost:5001/testcase/618507d901f78033bf11f1ad
+GET http://localhost:5001/testcase/feature/619f4d601102c1ca3a1385bc
 
 ###
-POST http://localhost:5001/testcase
+POST http://localhost:5001/testcase/619f67a0104fac532794c14a
 Content-Type: application/json
 
 {
-    "product_id": "619dc1a99864ee856ec1cef2",
-    "name": "TestcaseA",
-    "coverageByFeatures": {
-        "Wall": 50,
-        "Door": 30
-    }
+    "data": 
+    [{"name": "TestcaseA",
+    "description": "Testing API",
+    "coverageByFeatures": [
+        {
+            "feature": "Window",
+            "coverage": 1.5
+        }
+    ]},
+    {"name": "TestcaseB",
+    "description": "Testing API",
+    "coverageByFeatures": [
+        {
+            "feature": "Door",
+            "coverage": 1.0
+        }
+    ]},
+    {"name": "TestcaseC",
+    "description": "Testing API",
+    "coverageByFeatures": [
+        {
+            "feature": "Window",
+            "coverage": 1.5
+        }
+    ]}]
 }
 
 ###
-DELETE http://localhost:5001/testcase/619dc4e9a0de1be7bea13e17
+DELETE http://localhost:5001/testcase/product/619f4cea44686c0bb92a6d14
 
 ###
-PATCH  http://localhost:5001/testcase/618507d901f78033bf11f1ad
+PATCH  http://localhost:5001/testcase/619f4d881102c1ca3a1385c6
 Content-Type: application/json
 
 {
-    "buildId": "DST_H033" 
+    "name": "TestcaseB" 
 }

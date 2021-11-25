@@ -18,6 +18,6 @@ app.use(express.json())
 
 app.use('/product', routes.productRouter)
 app.use('/feature', routes.featureRouter)
-//app.use('/testcase', testcaseRouter)
+app.use('/testcase', routes.testcaseRouter)
 
 app.listen(port || 3001, () => { console.log(`Currently listening on port ${port}`) })

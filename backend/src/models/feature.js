@@ -3,7 +3,7 @@ import mongoose from "mongoose"
 const Schema = mongoose.Schema
 
 const featureSchema = new Schema({
-    product: {
+    product_id: {
         type: Schema.Types.ObjectId,
         ref: "Product",
         required: true

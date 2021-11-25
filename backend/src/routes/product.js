@@ -5,12 +5,12 @@ import { statusCodes } from "../utils/httpResponses"
 import { checkProductExist } from "../utils/helper"
 
 const router = Router()
-const { Product, Feature } = models
+const { Product, Feature, Testcase } = models
 
 // GET all products
 router.get('/', async (req, res) => {
     try {
-        const products = await Product.find().populate("listOfFeatures")
+        const products = await Product.find()
         res.status(statusCodes.ok).json(products)
     } catch (err) {
         res.status(statusCodes.internalServerError).json({ message: err.message })
@@ -20,6 +20,16 @@ router.get('/', async (req, res) => {
 // GET one product
 router.get('/:product_id', checkProductExist, (req, res) => {
     res.status(statusCodes.ok).json(res.product)
+})
+
+// GET feature coverage of all features in aone product
+router.get('/coverage/:product_id', checkProductExist, async (req, res) => {
+    const result = await Testcase.aggregate([
+        { $unwind: "$coverageByFeatures" },
+        { $match: { product_id: req.params.product_id } },
+        { $group: { _id: "$coverageByFeatures.feature", feature_coverage: { $sum: "$coverageByFeatures.coverage" } } }
+    ])
+    res.json(result)
 })
 
 // POST one product
@@ -34,7 +44,7 @@ router.post('/', async (req, res) => {
         product.listOfFeatures.push(featureId)
         const feature = new Feature({
             _id: featureId,
-            product: product._id,
+            product_id: product._id,
             name: featureName
         })
         try {
@@ -85,7 +95,7 @@ router.delete('/', async (req, res) => {
 // DELETE one product, and all features related to it
 router.delete('/:product_id', checkProductExist, async (req, res) => {
     try {
-        await Feature.deleteMany({ product: req.params.product_id })
+        await Feature.deleteMany({ product_id: req.params.product_id })
         await res.product.remove()
         res.status(statusCodes.ok).json({ message: "Deleted product data" })
     } catch (err) {

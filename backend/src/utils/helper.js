@@ -1,7 +1,7 @@
 import { statusCodes } from "./httpResponses"
 import models from "../models/index"
 
-const { Product, Feature } = models
+const { Product, Feature, Testcase } = models
 
 // Checks if a product with the corresponding product_id exists in DB
 // If exist, store in res.product
@@ -32,5 +32,21 @@ export async function checkFeatureExist(req, res, next) {
         return res.status(statusCodes.internalServerError).json({ message: err.message })
     }
     res.feature = feature
+    next()
+}
+
+// Checks if a testcase with the corresponding testcase_id exists in DB
+// If exist, store in res.testcase
+export async function checkTestcaseExist(req, res, next) {
+    let testcase
+    try {
+        testcase = await Testcase.findById(req.params.testcase_id)
+        if (testcase == null) {
+            return res.status(statusCodes.notFound).json({ message: "Cannot find testcase data" })
+        }
+    } catch (err) {
+        return res.status(statusCodes.internalServerError).json({ message: err.message })
+    }
+    res.testcase = testcase
     next()
 }

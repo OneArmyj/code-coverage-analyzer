@@ -17,8 +17,12 @@ const testcaseSchema = new Schema({
     },
     coverageByFeatures: {
         // Object mappings of "Feature Name" : CoverageOfFeature
-        type: Object,
+        type: [{
+            feature: String,
+            coverage: Number
+        }],
         required: true
+
     }
 })
 
