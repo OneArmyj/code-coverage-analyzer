@@ -1,4 +1,4 @@
-GET http://localhost:5001/product/coverage/619f4cea44686c0bb92a6d14
+GET http://localhost:5001/product
 
 ###
 GET http://localhost:5001/product/619f4cea44686c0bb92a6d14
@@ -15,7 +15,7 @@ Content-Type: application/json
 
 
 ###
-DELETE http://localhost:5001/product/619f4ca944686c0bb92a6cfd
+DELETE http://localhost:5001/product
 
 ###
 PATCH  http://localhost:5001/product/619f67a0104fac532794c14a

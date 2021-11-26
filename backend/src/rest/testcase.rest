@@ -1,10 +1,10 @@
-GET http://localhost:5001/testcase/product/619f4cea44686c0bb92a6d14
+GET http://localhost:5001/testcase
 
 ###
 GET http://localhost:5001/testcase/feature/619f4d601102c1ca3a1385bc
 
 ###
-POST http://localhost:5001/testcase/619f67a0104fac532794c14a
+POST http://localhost:5001/testcase/619f9a502957cb7f3d2dccc0
 Content-Type: application/json
 
 {
@@ -13,8 +13,8 @@ Content-Type: application/json
     "description": "Testing API",
     "coverageByFeatures": [
         {
-            "feature": "Window",
-            "coverage": 1.5
+            "feature": "Wall",
+            "coverage": 1.0
         }
     ]},
     {"name": "TestcaseB",
@@ -22,21 +22,21 @@ Content-Type: application/json
     "coverageByFeatures": [
         {
             "feature": "Door",
-            "coverage": 1.0
+            "coverage": 2.0
         }
     ]},
     {"name": "TestcaseC",
     "description": "Testing API",
     "coverageByFeatures": [
         {
-            "feature": "Window",
-            "coverage": 1.5
+            "feature": "Room",
+            "coverage": 3.0
         }
     ]}]
 }
 
 ###
-DELETE http://localhost:5001/testcase/product/619f4cea44686c0bb92a6d14
+DELETE http://localhost:5001/testcase/product/619f9a502957cb7f3d2dccc0
 
 ###
 PATCH  http://localhost:5001/testcase/619f4d881102c1ca3a1385c6

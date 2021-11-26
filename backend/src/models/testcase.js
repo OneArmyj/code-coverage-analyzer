@@ -22,7 +22,6 @@ const testcaseSchema = new Schema({
             coverage: Number
         }],
         required: true
-
     }
 })
 

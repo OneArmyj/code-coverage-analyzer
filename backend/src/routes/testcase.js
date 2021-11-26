@@ -4,7 +4,7 @@ import { statusCodes } from "../utils/httpResponses"
 import { checkProductExist, checkFeatureExist, checkTestcaseExist } from "../utils/helper"
 
 const router = Router()
-const { Testcase } = models
+const { Feature, Testcase } = models
 
 // GET all testcases in DB
 router.get('/', async (req, res) => {
@@ -65,6 +65,8 @@ router.post('/:product_id', checkProductExist, async (req, res) => {
             res.status(statusCodes.badRequest).json({ message: err.message })
         }
     }
+    updateFeatureCoverage(req.params.product_id)
+
     res.status(statusCodes.createContent).json(newTestcases)
 })
 
@@ -91,6 +93,7 @@ router.patch('/:testcase_id', checkTestcaseExist, async (req, res) => {
 router.delete('/product/:product_id', checkProductExist, async (req, res) => {
     try {
         await Testcase.deleteMany({ product: req.params.product_id })
+        updateFeatureCoverage(req.params.product_id)
         res.status(statusCodes.ok).json({ message: "Deleted all testcase data related to the specific Product" })
     } catch (err) {
         res.status(statusCodes.internalServerError).json({ message: err.message })
@@ -101,10 +104,33 @@ router.delete('/product/:product_id', checkProductExist, async (req, res) => {
 router.delete('/:testcase_id', checkTestcaseExist, async (req, res) => {
     try {
         await res.testcase.remove()
+        updateFeatureCoverage(res.testcase.product_id)
         res.status(statusCodes.ok).json({ message: "Deleted feature data" })
     } catch (err) {
         res.status(statusCodes.internalServerError).json({ message: err.message })
     }
 })
+
+async function updateFeatureCoverage(product_id) {
+    const updatedFeatureData = await Testcase.aggregate([
+        { $unwind: "$coverageByFeatures" },
+        { $match: { product_id: product_id } },
+        { $group: { _id: "$coverageByFeatures.feature", feature_coverage: { $sum: "$coverageByFeatures.coverage" } } }
+    ])
+    console.log(updatedFeatureData)
+
+    for (let x = 0; x < updatedFeatureData.length; x++) {
+        const feature_name = updatedFeatureData[x]._id
+        const updated_feature_coverage = updatedFeatureData[x].feature_coverage
+        const feature = await Feature.findOne({ product_id: product_id, name: feature_name })
+        feature.feature_coverage = updated_feature_coverage
+        try {
+            await feature.save()
+        } catch (err) {
+            console.log(err.message)
+        }
+    }
+    console.log("Feature coverage data is updated!")
+}
 
 export default router
