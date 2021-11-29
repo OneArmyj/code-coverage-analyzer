@@ -1,6 +1,6 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
-const Schema = mongoose.Schema
+const Schema = mongoose.Schema;
 
 const testcaseSchema = new Schema({
     product_id: {
@@ -24,7 +24,7 @@ const testcaseSchema = new Schema({
         _id: false,
         required: true
     }
-})
+});
 
-const Testcase = mongoose.model('Testcase', testcaseSchema)
-export default Testcase
+const Testcase = mongoose.model('Testcase', testcaseSchema);
+export default Testcase;

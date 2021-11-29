@@ -1,6 +1,6 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
-const Schema = mongoose.Schema
+const Schema = mongoose.Schema;
 
 const featureSchema = new Schema({
     product_id: {
@@ -17,7 +17,7 @@ const featureSchema = new Schema({
         type: Number,
         default: 0
     }
-})
+});
 
-const Feature = mongoose.model('Feature', featureSchema)
-export default Feature
+const Feature = mongoose.model('Feature', featureSchema);
+export default Feature;
