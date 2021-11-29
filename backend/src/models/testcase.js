@@ -17,10 +17,11 @@ const testcaseSchema = new Schema({
     },
     coverageByFeatures: {
         // Object mappings of "Feature Name" : CoverageOfFeature
-        type: [{
+        type: Array({
             feature: String,
             coverage: Number
-        }],
+        }),
+        _id: false,
         required: true
     }
 })

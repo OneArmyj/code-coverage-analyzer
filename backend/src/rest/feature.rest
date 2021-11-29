@@ -7,22 +7,14 @@ GET http://localhost:5001/feature/619e412f5fae31bf70e6c66a
 GET http://localhost:5001/feature/coverage/619f67a0104fac532794c14a
 
 ###
-POST http://localhost:5001/feature/619f4cea44686c0bb92a6d14
+POST http://localhost:5001/feature/61a4696a02492d88c35d01d0
 Content-Type: application/json
 
 {
-    "name": "Door"
+    "name": "Window"
 }
 
 ###
-DELETE http://localhost:5001/feature/product/619f4cea44686c0bb92a6d14
+DELETE http://localhost:5001/feature/product/61a46d4608c76d7372c7713e
 ###
-DELETE http://localhost:5001/feature/619f222d4a50b364d25fab50
-
-###
-PATCH  http://localhost:5001/feature/619f4d1244686c0bb92a6d27
-Content-Type: application/json
-
-{
-    "name": "Door" 
-}
+DELETE http://localhost:5001/feature/61a46c1382476ecc363747db

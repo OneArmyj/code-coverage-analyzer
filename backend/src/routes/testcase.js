@@ -1,7 +1,7 @@
 import { Router } from "express"
 import models from "../models/index"
 import { statusCodes } from "../utils/httpResponses"
-import { checkProductExist, checkFeatureExist, checkTestcaseExist } from "../utils/helper"
+import { checkProductExist, checkFeatureExist, checkTestcaseExist, updateFeatureCoverage } from "../utils/helper"
 
 const router = Router()
 const { Feature, Testcase } = models
@@ -80,9 +80,13 @@ router.patch('/:testcase_id', checkTestcaseExist, async (req, res) => {
     if (req.body.description != null) {
         res.testcase.description = req.body.name
     }
+    if (req.body.coverageByFeatures != null) {
+        res.testcase.coverageByFeatures = req.body.coverageByFeatures
+    }
 
     try {
         const updatedTestcase = await res.testcase.save()
+        updateFeatureCoverage(res.testcase.product_id)
         res.status(statusCodes.ok).json(updatedTestcase)
     } catch (err) {
         res.status(statusCodes.badRequest).json({ message: err.message })
@@ -110,27 +114,5 @@ router.delete('/:testcase_id', checkTestcaseExist, async (req, res) => {
         res.status(statusCodes.internalServerError).json({ message: err.message })
     }
 })
-
-async function updateFeatureCoverage(product_id) {
-    const updatedFeatureData = await Testcase.aggregate([
-        { $unwind: "$coverageByFeatures" },
-        { $match: { product_id: product_id } },
-        { $group: { _id: "$coverageByFeatures.feature", feature_coverage: { $sum: "$coverageByFeatures.coverage" } } }
-    ])
-    console.log(updatedFeatureData)
-
-    for (let x = 0; x < updatedFeatureData.length; x++) {
-        const feature_name = updatedFeatureData[x]._id
-        const updated_feature_coverage = updatedFeatureData[x].feature_coverage
-        const feature = await Feature.findOne({ product_id: product_id, name: feature_name })
-        feature.feature_coverage = updated_feature_coverage
-        try {
-            await feature.save()
-        } catch (err) {
-            console.log(err.message)
-        }
-    }
-    console.log("Feature coverage data is updated!")
-}
 
 export default router

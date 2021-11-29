@@ -13,10 +13,10 @@ const productSchema = new Schema({
     },
     listOfFeatures: {
         // list of Feature's ObjectId
-        type: [{
+        type: Array({
             type: Schema.Types.ObjectId,
             ref: "Feature"
-        }],
+        }),
         default: []
     },
     date: {

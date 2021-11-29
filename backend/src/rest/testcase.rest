@@ -4,7 +4,7 @@ GET http://localhost:5001/testcase
 GET http://localhost:5001/testcase/feature/619f4d601102c1ca3a1385bc
 
 ###
-POST http://localhost:5001/testcase/619f9a502957cb7f3d2dccc0
+POST http://localhost:5001/testcase/61a4696a02492d88c35d01d0
 Content-Type: application/json
 
 {
@@ -36,12 +36,21 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:5001/testcase/product/619f9a502957cb7f3d2dccc0
+DELETE http://localhost:5001/testcase/product/61a451b51d1f769a9c62f067
 
 ###
-PATCH  http://localhost:5001/testcase/619f4d881102c1ca3a1385c6
+DELETE http://localhost:5001/testcase/61a46342d7fe8300588821a4
+
+###
+PATCH  http://localhost:5001/testcase/61a4630ad7fe830058882199
 Content-Type: application/json
 
 {
-    "name": "TestcaseB" 
+    "name": "TestcaseWindow",
+    "coverageByFeatures": [
+        {
+            "feature": "Window",
+            "coverage": 15
+        }
+    ]
 }

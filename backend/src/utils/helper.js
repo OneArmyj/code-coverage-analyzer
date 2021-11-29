@@ -3,6 +3,11 @@ import models from "../models/index"
 
 const { Product, Feature, Testcase } = models
 
+// Check for duplicates in an array
+export function checkIfDuplicateExists(arr) {
+    return new Set(arr).size !== arr.length
+}
+
 // Checks if a product with the corresponding product_id exists in DB
 // If exist, store in res.product
 export async function checkProductExist(req, res, next) {
@@ -49,4 +54,37 @@ export async function checkTestcaseExist(req, res, next) {
     }
     res.testcase = testcase
     next()
+}
+
+// To be used when adding/ deleting/ updating Testcases
+// To be used when adding/ updating Features
+export async function updateFeatureCoverage(product_id) {
+    // find all features belonging to the product_id
+    // for every feature, find the testcases that still exist that test it and sum it
+    const featuresToUpdate = await Feature.find({ product_id: product_id })
+
+    for (let i = 0; i < featuresToUpdate.length; i++) {
+        const newFeatureCoverage = await Testcase.aggregate([
+            { $unwind: "$coverageByFeatures" },
+            { $match: { "product_id": product_id, "coverageByFeatures.feature": featuresToUpdate[i].name } },
+            { $group: { _id: "$coverageByFeatures.feature", feature_coverage: { $sum: "$coverageByFeatures.coverage" } } }
+        ])
+
+        console.log(newFeatureCoverage)
+
+        // if array is empty, hence no feature coverage is present in all testcases
+        if (!newFeatureCoverage.length) {
+            featuresToUpdate[i].feature_coverage = 0
+        } else {
+            featuresToUpdate[i].feature_coverage = newFeatureCoverage[0].feature_coverage
+        }
+
+        try {
+            await featuresToUpdate[i].save()
+        } catch (err) {
+            console.log(err.message)
+        }
+    }
+
+    console.log("Feature coverage data is updated!")
 }

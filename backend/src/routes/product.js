@@ -2,7 +2,7 @@ import { Router } from "express"
 import models from "../models/index"
 import { ObjectId } from "mongodb"
 import { statusCodes } from "../utils/httpResponses"
-import { checkProductExist } from "../utils/helper"
+import { checkProductExist, checkIfDuplicateExists } from "../utils/helper"
 
 const router = Router()
 const { Product, Feature, Testcase } = models
@@ -28,6 +28,12 @@ router.post('/', async (req, res) => {
         name: req.body.name,
         buildId: req.body.buildId,
     })
+
+    // check if req.body.listOfFeatures contain any duplicates
+    if (checkIfDuplicateExists(req.body.listOfFeatures)) {
+        res.status(statusCodes.badRequest).json({ message: "Duplicate features found in listOfFeatures field" })
+        return
+    }
 
     req.body.listOfFeatures.forEach(async featureName => {
         const featureId = ObjectId()
@@ -86,9 +92,9 @@ router.delete('/', async (req, res) => {
 // DELETE one product, and all features related to it
 router.delete('/:product_id', checkProductExist, async (req, res) => {
     try {
-        await Feature.deleteMany({ product_id: "hello" })
-        await res.product.remove()
-        res.status(statusCodes.ok).json({ message: "Deleted product data" })
+        await Feature.deleteMany({ product_id: req.params.product_id })
+        const deletedProduct = await res.product.remove()
+        res.status(statusCodes.ok).json({ message: `Deleted product (${deletedProduct.name} - ${deletedProduct.buildId}) data` })
     } catch (err) {
         res.status(statusCodes.internalServerError).json({ message: err.message })
     }

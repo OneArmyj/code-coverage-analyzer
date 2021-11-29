@@ -10,6 +10,7 @@ const featureSchema = new Schema({
     },
     name: {
         type: String,
+        unique: true,
         required: true
     },
     feature_coverage: {
