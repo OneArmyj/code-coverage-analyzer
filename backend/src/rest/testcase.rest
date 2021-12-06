@@ -4,53 +4,35 @@ GET http://localhost:5001/testcase
 GET http://localhost:5001/testcase/feature/619f4d601102c1ca3a1385bc
 
 ###
-POST http://localhost:5001/testcase/61a4696a02492d88c35d01d0
+POST http://localhost:5001/testcase/61adb7a2a5fc1368019091b8
 Content-Type: application/json
 
 {
     "data": 
     [{"name": "TestcaseA",
+    "feature": "Wall",
     "description": "Testing API",
-    "coverageByFeatures": [
-        {
-            "feature": "Wall",
-            "coverage": 1.0
-        }
-    ]},
+    "line_coverage": 2.0},
     {"name": "TestcaseB",
+    "feature": "Door",
     "description": "Testing API",
-    "coverageByFeatures": [
-        {
-            "feature": "Door",
-            "coverage": 2.0
-        }
-    ]},
+    "line_coverage": 4.0},
     {"name": "TestcaseC",
+    "feature": "Room",
     "description": "Testing API",
-    "coverageByFeatures": [
-        {
-            "feature": "Room",
-            "coverage": 3.0
-        }
-    ]}]
+    "line_coverage": 6.0}]
 }
 
 ###
-DELETE http://localhost:5001/testcase/product/61a451b51d1f769a9c62f067
+DELETE http://localhost:5001/testcase/product/61adb7a2a5fc1368019091b8
 
 ###
-DELETE http://localhost:5001/testcase/61a46342d7fe8300588821a4
+DELETE http://localhost:5001/testcase/61adb90efb19d7ffb54a0a45
 
 ###
-PATCH  http://localhost:5001/testcase/61a4630ad7fe830058882199
+PATCH  http://localhost:5001/testcase/61adb90efb19d7ffb54a0a41
 Content-Type: application/json
 
 {
-    "name": "TestcaseWindow",
-    "coverageByFeatures": [
-        {
-            "feature": "Window",
-            "coverage": 15
-        }
-    ]
+    "name": "TestcaseWall"
 }

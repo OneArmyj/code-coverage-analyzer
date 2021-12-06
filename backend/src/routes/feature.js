@@ -1,7 +1,8 @@
 import { Router } from "express";
 import models from "../models/index";
 import { statusCodes } from "../utils/httpResponses";
-import { checkProductExist, checkFeatureExist, updateFeatureCoverage } from "../utils/helper";
+import { checkProductExist, checkFeatureExist, checkUniqueFeature } from "../utils/helper";
+import Testcase from "../models/testcase";
 
 const router = Router();
 const { Product, Feature } = models;
@@ -32,14 +33,8 @@ router.get('/:feature_id', checkFeatureExist, async (req, res) => {
 });
 
 // POST one feature to an existing product
-router.post('/:product_id', checkProductExist, async (req, res) => {
+router.post('/:product_id', checkProductExist, checkUniqueFeature, async (req, res) => {
     // Check if feature already exist in product
-    const duplicateFeature = await Feature.findOne({ product_id: req.params.product_id, name: req.body.name });
-    if (duplicateFeature != null) {
-        res.status(statusCodes.badRequest).json({ message: `The feature you want to add (${req.body.name}) already exists for the product (${res.product.name})` });
-        return;
-    }
-
     const feature = new Feature({
         product_id: req.params.product_id,
         name: req.body.name,
@@ -49,8 +44,6 @@ router.post('/:product_id', checkProductExist, async (req, res) => {
     try {
         await res.product.save();
         await feature.save();
-        // Need check if any existing testcase covered the feature, if so compute feature_coverage
-        await updateFeatureCoverage(req.params.product_id);
         const newFeature = await Feature.find({ _id: feature._id });
         res.status(statusCodes.createContent).json(newFeature);
     } catch (err) {
@@ -65,6 +58,7 @@ router.post('/:product_id', checkProductExist, async (req, res) => {
 router.delete('/product/:product_id', checkProductExist, async (req, res) => {
     try {
         await Product.updateOne({ _id: req.params.product_id }, { $set: { listOfFeatures: [] } });
+        await Testcase.deleteMany({ product_id: req.params.product_id });
         await Feature.deleteMany({ product_id: req.params.product_id });
         res.status(statusCodes.ok).json({ message: `Deleted all feature data related to the specific product (${res.product.name})` });
     } catch (err) {
@@ -75,9 +69,15 @@ router.delete('/product/:product_id', checkProductExist, async (req, res) => {
 // DELETE one feature, need delete it from product as well
 router.delete('/:feature_id', checkFeatureExist, async (req, res) => {
     try {
+        // Update Product
         const product = await Product.findById(res.feature.product_id);
         product.listOfFeatures = product.listOfFeatures.filter(x => x != req.params.feature_id);
         await product.save();
+
+        // Update Testcase
+        await Testcase.deleteMany({ feature_id: req.params.feature_id });
+
+        // Update Feature
         const removedFeature = await res.feature.remove();
         res.status(statusCodes.ok).json({ message: `Deleted feature (${removedFeature.name}) data` });
     } catch (err) {

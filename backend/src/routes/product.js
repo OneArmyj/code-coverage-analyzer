@@ -10,7 +10,7 @@ const { Product, Feature, Testcase } = models;
 // GET all products
 router.get('/', async (req, res) => {
     try {
-        const products = await Product.find();
+        const products = await Product.find().populate("listOfFeatures");
         res.status(statusCodes.ok).json(products);
     } catch (err) {
         res.status(statusCodes.internalServerError).json({ message: err.message });
@@ -80,8 +80,8 @@ router.patch('/:product_id', checkProductExist, async (req, res) => {
 // DELETE everything in product collection, and all features and all testcases related to it
 router.delete('/', async (req, res) => {
     try {
-        await Feature.deleteMany({});
         await Testcase.deleteMany({});
+        await Feature.deleteMany({});
         await Product.deleteMany({});
         res.status(statusCodes.ok).json({ message: "Deleted all product data" });
     } catch (err) {
@@ -89,9 +89,10 @@ router.delete('/', async (req, res) => {
     }
 });
 
-// DELETE one product, and all features related to it
+// DELETE one product, and all features and testcases related to it
 router.delete('/:product_id', checkProductExist, async (req, res) => {
     try {
+        await Testcase.deleteMany({ product_id: req.params.product_id });
         await Feature.deleteMany({ product_id: req.params.product_id });
         const deletedProduct = await res.product.remove();
         res.status(statusCodes.ok).json({ message: `Deleted product (${deletedProduct.name} - ${deletedProduct.buildId}) data` });

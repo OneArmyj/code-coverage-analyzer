@@ -4,7 +4,13 @@ const Schema = mongoose.Schema;
 
 const testcaseSchema = new Schema({
     product_id: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: "Product",
+        required: true
+    },
+    feature_id: {
+        type: Schema.Types.ObjectId,
+        ref: "Feature",
         required: true
     },
     name: {
@@ -15,13 +21,8 @@ const testcaseSchema = new Schema({
         type: String,
         default: ""
     },
-    coverageByFeatures: {
-        // Object mappings of "Feature Name" : CoverageOfFeature
-        type: Array({
-            feature: String,
-            coverage: Number
-        }),
-        _id: false,
+    line_coverage: {
+        type: Number,
         required: true
     }
 });

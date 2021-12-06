@@ -10,12 +10,19 @@ const featureSchema = new Schema({
     },
     name: {
         type: String,
-        unique: true,
         required: true
     },
     feature_coverage: {
         type: Number,
         default: 0
+    },
+    listOfTestcases: {
+        // list of Feature's ObjectId
+        type: Array({
+            type: Schema.Types.ObjectId,
+            ref: "Testcase"
+        }),
+        default: []
     }
 });
 

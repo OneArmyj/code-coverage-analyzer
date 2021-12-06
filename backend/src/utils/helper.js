@@ -56,33 +56,36 @@ export async function checkTestcaseExist(req, res, next) {
     next();
 }
 
-// To be used when adding/ deleting/ updating Testcases
-// To be used when adding/ updating Features
-export async function updateFeatureCoverage(product_id) {
-    // find all features belonging to the product_id
-    // for every feature, find the testcases that still exist that test it and sum it
-    const featuresToUpdate = await Feature.find({ product_id: product_id });
-
-    for (let i = 0; i < featuresToUpdate.length; i++) {
-        const newFeatureCoverage = await Testcase.aggregate([
-            { $unwind: "$coverageByFeatures" },
-            { $match: { "product_id": product_id, "coverageByFeatures.feature": featuresToUpdate[i].name } },
-            { $group: { _id: "$coverageByFeatures.feature", feature_coverage: { $sum: "$coverageByFeatures.coverage" } } }
-        ]);
-
-        // if array is empty, hence no feature coverage is present in all testcases
-        if (!newFeatureCoverage.length) {
-            featuresToUpdate[i].feature_coverage = 0;
-        } else {
-            featuresToUpdate[i].feature_coverage = newFeatureCoverage[0].feature_coverage;
+// Check if there is an existing feature_name in the product document
+// Used in post method for feature
+export async function checkUniqueFeature(req, res, next) {
+    try {
+        const exist = await Feature.findOne({ product_id: req.params.product_id, name: req.body.name });
+        if (exist != null) {
+            return res.status(statusCodes.badRequest).json({ message: `The feature you want to add (${req.body.name}) already exists for the product (${res.product.name} - ${res.product.buildId})` });
         }
-
-        try {
-            await featuresToUpdate[i].save();
-        } catch (err) {
-            console.log(err.message);
-        }
+    } catch (err) {
+        return res.status(statusCodes.internalServerError).json({ message: err.message });
     }
 
-    console.log("Feature coverage data is updated!");
+    next();
+}
+
+// Check if there is an existing testcase_name in the feature document
+// Used in post method for testcase
+export async function checkUniqueTestcase(req, res, next) {
+    const data = req.body.data;
+    try {
+        for (let i = 0; i < data.length; i++) {
+            const feature = await Feature.findOne({ name: data[i].feature });
+            const exist = await Testcase.findOne({ name: data[i].name, feature_id: feature._id });
+            if (exist != null) {
+                return res.status(statusCodes.badRequest).json({ message: `The testcase you want to add (${data[i].name}) already exists for the feature (${feature.name})` });
+            }
+        }
+    } catch (err) {
+        return res.status(statusCodes.internalServerError).json({ message: err.message });
+    }
+
+    next();
 }

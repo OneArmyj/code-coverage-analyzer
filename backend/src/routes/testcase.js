@@ -1,7 +1,8 @@
 import { Router } from "express";
 import models from "../models/index";
 import { statusCodes } from "../utils/httpResponses";
-import { checkProductExist, checkFeatureExist, checkTestcaseExist, updateFeatureCoverage } from "../utils/helper";
+import { checkProductExist, checkFeatureExist, checkTestcaseExist, checkUniqueTestcase } from "../utils/helper";
+import Feature from "../models/feature";
 
 const router = Router();
 const { Testcase } = models;
@@ -29,11 +30,7 @@ router.get('/product/:product_id', checkProductExist, async (req, res) => {
 // GET all testcases of a feature
 router.get('/feature/:feature_id', checkFeatureExist, async (req, res) => {
     try {
-        const testcases = await Testcase.find({
-            product_id: res.feature.product_id,
-            coverageByFeatures: { $elemMatch: { feature: res.feature.name } }
-        });
-
+        const testcases = await Testcase.find({ feature_id: res.feature._id });
         res.status(statusCodes.ok).json(testcases);
     } catch (err) {
         res.status(statusCodes.internalServerError).json({ message: err.message });
@@ -46,26 +43,31 @@ router.get('/:testcase_id', checkTestcaseExist, async (req, res) => {
 });
 
 // POST testcases to an existing product
-router.post('/:product_id', checkProductExist, async (req, res) => {
-    // Need check if any existing testcase covered the feature, if so compute feature_coverage
+router.post('/:product_id', checkProductExist, checkUniqueTestcase, async (req, res) => {
     let newTestcases = [];
     const data = req.body.data;
 
     for (let i = 0; i < data.length; i++) {
+        const feature_name = data[i].feature;
+        const feature_to_update = await Feature.findOne({ product_id: req.params.product_id, name: feature_name });
         const testcase = new Testcase({
             product_id: req.params.product_id,
+            feature_id: feature_to_update._id,
             name: data[i].name,
             description: data[i].description,
-            coverageByFeatures: data[i].coverageByFeatures
+            line_coverage: data[i].line_coverage
         });
 
+        feature_to_update.feature_coverage += data[i].line_coverage;
+        feature_to_update.listOfTestcases.push(testcase._id);
+
         try {
+            await feature_to_update.save();
             newTestcases.push(await testcase.save());
         } catch (err) {
             res.status(statusCodes.badRequest).json({ message: err.message });
         }
     }
-    updateFeatureCoverage(req.params.product_id);
 
     res.status(statusCodes.createContent).json(newTestcases);
 });
@@ -80,13 +82,9 @@ router.patch('/:testcase_id', checkTestcaseExist, async (req, res) => {
     if (req.body.description != null) {
         res.testcase.description = req.body.name;
     }
-    if (req.body.coverageByFeatures != null) {
-        res.testcase.coverageByFeatures = req.body.coverageByFeatures;
-    }
 
     try {
         const updatedTestcase = await res.testcase.save();
-        updateFeatureCoverage(res.testcase.product_id);
         res.status(statusCodes.ok).json(updatedTestcase);
     } catch (err) {
         res.status(statusCodes.badRequest).json({ message: err.message });
@@ -97,7 +95,7 @@ router.patch('/:testcase_id', checkTestcaseExist, async (req, res) => {
 router.delete('/product/:product_id', checkProductExist, async (req, res) => {
     try {
         await Testcase.deleteMany({ product: req.params.product_id });
-        updateFeatureCoverage(req.params.product_id);
+        await Feature.updateMany({ product_id: req.params.product_id }, { $set: { feature_coverage: 0, listOfTestcases: [] } });
         res.status(statusCodes.ok).json({ message: "Deleted all testcase data related to the specific Product" });
     } catch (err) {
         res.status(statusCodes.internalServerError).json({ message: err.message });
@@ -107,9 +105,12 @@ router.delete('/product/:product_id', checkProductExist, async (req, res) => {
 // DELETE one testcase, need to update feature coverage in Feature
 router.delete('/:testcase_id', checkTestcaseExist, async (req, res) => {
     try {
+        const feature_to_update = await Feature.findOne({ _id: res.testcase.feature_id });
+        feature_to_update.listOfTestcases = feature_to_update.listOfTestcases.filter(x => x != req.params.testcase_id);
+        feature_to_update.feature_coverage -= res.testcase.line_coverage;
+        await feature_to_update.save();
         await res.testcase.remove();
-        updateFeatureCoverage(res.testcase.product_id);
-        res.status(statusCodes.ok).json({ message: "Deleted feature data" });
+        res.status(statusCodes.ok).json({ message: "Deleted testcase data" });
     } catch (err) {
         res.status(statusCodes.internalServerError).json({ message: err.message });
     }
