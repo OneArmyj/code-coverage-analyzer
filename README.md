@@ -110,6 +110,7 @@ A Product contains a **name** (eg. ACAMEP), a **buildId** (eg. DST_H036), a **li
 It supports the following operations:
 
 <br/>
+<br/>
 
 <details>
 <summary>Creating a Product</summary>
@@ -128,8 +129,6 @@ Content-Type: application/json
 ```
 </details>
 
-<br/>
-
 <details>
 <summary>Getting Product Informations</summary>
 
@@ -138,8 +137,6 @@ Content-Type: application/json
 GET http://localhost:5001/product
 ```
 </details>
-
-<br/>
 
 <details>
 <summary>Editing a single Product</summary>
@@ -156,8 +153,6 @@ Content-Type: application/json
 ```
 </details>
 
-<br/>
-
 <details>
 <summary>Deleting all Products</summary>
 
@@ -167,8 +162,6 @@ Content-Type: application/json
 DELETE http://localhost:5001/product
 ```
 </details>
-
-<br/>
 
 <details>
 <summary>Deleting a single Product</summary>
@@ -182,8 +175,6 @@ DELETE http://localhost:5001/product/61a46f26a46904fb2704a72c
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-<br/>
-<hr/>
 
 <!-- Feature Routes -->
 ## Features
@@ -219,6 +210,7 @@ A Feature contains a **name** (eg. Wall), a **feature_coverage** that will be co
 It supports the following operations:
 
 <br/>
+<br/>
 
 <details>
 <summary>Adding a Feature</summary>
@@ -235,8 +227,6 @@ Content-Type: application/json
 }
 ```
 </details>
-
-<br/>
 
 <details>
 <summary>Adding a Feature</summary>
