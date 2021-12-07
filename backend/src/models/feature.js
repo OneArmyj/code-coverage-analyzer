@@ -17,7 +17,6 @@ const featureSchema = new Schema({
         default: 0
     },
     listOfTestcases: {
-        // list of Feature's ObjectId
         type: Array({
             type: Schema.Types.ObjectId,
             ref: "Testcase"

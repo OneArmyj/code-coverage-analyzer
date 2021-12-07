@@ -51,9 +51,6 @@ router.post('/:product_id', checkProductExist, checkUniqueFeature, async (req, r
     }
 });
 
-// TO EDIT A FEATURE, YOU HAVE TO DELETE AND ADD THE FEATURE AGAIN
-// NO PATCH METHOD FOR FEATURES
-
 // DELETE all features for a product, need delete it from product as well
 router.delete('/product/:product_id', checkProductExist, async (req, res) => {
     try {

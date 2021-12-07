@@ -29,6 +29,12 @@ router.post('/', async (req, res) => {
         buildId: req.body.buildId,
     });
 
+    // Checks if listOfFeatures is included in post request
+    if (!req.body.hasOwnProperty("listOfFeatures")) {
+        res.status(statusCodes.badRequest).json({ message: "listOfFeatures is a compulsory field" });
+        return;
+    }
+
     // check if req.body.listOfFeatures contain any duplicates
     if (checkIfDuplicateExists(req.body.listOfFeatures)) {
         res.status(statusCodes.badRequest).json({ message: "Duplicate features found in listOfFeatures field" });

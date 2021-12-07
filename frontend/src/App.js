@@ -1,7 +1,6 @@
-import './App.css';
 import axios from "axios";
-import Viz from "./vegalite"
 import React from 'react'
+import HomePage from './views/pages/homePage';
 
 const App = () => {
 
@@ -13,17 +12,9 @@ const App = () => {
     }
 
     return (
-        <div className="App">
-            <header className="App-header">
-                <h1>
-                    Code Coverage Visualization
-                </h1>
-
-            </header>
-            <div className="App-body">
-                <Viz />
-            </div>
-        </div>
+        <>
+            <HomePage />
+        </>
     );
 }
 

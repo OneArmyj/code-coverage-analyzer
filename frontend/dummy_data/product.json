@@ -1,0 +1,9 @@
+{
+    "name": "ACAMEP",
+    "buildId": "DST_H036",
+    "listOfFeatures": [
+        "Wall",
+        "Door",
+        "Room"
+    ]
+}

@@ -1,12 +1,3 @@
-GET http://localhost:5001/testcase
-
-###
-GET http://localhost:5001/testcase/feature/619f4d601102c1ca3a1385bc
-
-###
-POST http://localhost:5001/testcase/61adb7a2a5fc1368019091b8
-Content-Type: application/json
-
 {
     "data": [
         {
@@ -28,18 +19,4 @@ Content-Type: application/json
             "line_coverage": 6.0
         }
     ]
-}
-
-###
-DELETE http://localhost:5001/testcase/product/61adb7a2a5fc1368019091b8
-
-###
-DELETE http://localhost:5001/testcase/61adb90efb19d7ffb54a0a45
-
-###
-PATCH  http://localhost:5001/testcase/61adb90efb19d7ffb54a0a41
-Content-Type: application/json
-
-{
-    "name": "TestcaseWall"
 }

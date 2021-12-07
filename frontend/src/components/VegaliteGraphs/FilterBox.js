@@ -1,6 +1,6 @@
 import React from 'react'
-import ToggleSwitch from '../components/ToggleSwitch'
-import CheckBox from '../components/CheckBox'
+import ToggleSwitch from '../ToggleSwitch'
+import CheckBox from '../CheckBox'
 
 const FilterBox = ({ sortCoverage, setSortCoverage }) => {
     return (
