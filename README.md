@@ -81,7 +81,7 @@ There are 3 collections created:
 <!-- Product Routes -->
 ## Products
 A product has the following schema (\backend\src\models\product.js): 
-```json
+```js
 const productSchema = new Schema({
     name: {
         type: String,
@@ -188,7 +188,7 @@ DELETE http://localhost:5001/product/61a46f26a46904fb2704a72c
 <!-- Feature Routes -->
 ## Features
 A feature has the following schema (\backend\src\models\feature.js): 
-```json
+```js
 const featureSchema = new Schema({
     product_id: {
         type: Schema.Types.ObjectId,
