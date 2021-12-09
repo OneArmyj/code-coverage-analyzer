@@ -1,3 +1,4 @@
+// PRODUCT DUMMY DATA
 export const validProduct1 = {
     name: "ACAMEP",
     buildId: "DST_H040",
@@ -31,4 +32,22 @@ export const invalidProduct2_no_buildId = {
 export const invalidProduct3_no_listOfFeatures = {
     name: "ACAMEP",
     buildId: "DST_H040"
+};
+
+export const invalidProduct4_duplicate_features = {
+    name: "ACAMEP",
+    buildId: "DST_H040",
+    listOfFeatures: [
+        "Wall", "Wall", "Wall"
+    ]
+};
+
+
+// FEATURE DUMMY DATA
+export const validFeature1 = {
+    name: "Window"
+};
+
+export const validFeature2 = {
+    name: "Door"
 };

@@ -4,7 +4,7 @@ import models from "../src/models/index";
 import app from "../src/server";
 import { statusCodes } from "../src/utils/httpResponses";
 import handleTestError from './utils/handleTestError';
-import { validProduct1, validProduct2, invalidProduct1_no_name, invalidProduct2_no_buildId, invalidProduct3_no_listOfFeatures } from './utils/dummyData';
+import { validProduct1, validProduct2, invalidProduct1_no_name, invalidProduct2_no_buildId, invalidProduct3_no_listOfFeatures, invalidProduct4_duplicate_features } from './utils/dummyData';
 import { validateProduct } from "./utils/validationMethods";
 
 chai.use(chaiHttp);
@@ -38,7 +38,7 @@ describe(`POST ${route}`, () => {
                 handleTestError(error);
             });
     });
-    it("ERROR: name is a required field", done => {
+    it("ERROR: name is a required field for Product", done => {
         chai.request(app)
             .post(`${route}`)
             .send(invalidProduct1_no_name)
@@ -51,7 +51,7 @@ describe(`POST ${route}`, () => {
                 handleTestError(error);
             });
     });
-    it("ERROR: buildId is a required field", done => {
+    it("ERROR: buildId is a required field for Product", done => {
         chai.request(app)
             .post(`${route}`)
             .send(invalidProduct2_no_buildId)
@@ -64,13 +64,26 @@ describe(`POST ${route}`, () => {
                 handleTestError(error);
             });
     });
-    it("ERROR: listOfFeatures is a required field", done => {
+    it("ERROR: listOfFeatures is a required field for Product", done => {
         chai.request(app)
             .post(`${route}`)
             .send(invalidProduct3_no_listOfFeatures)
             .then(result => {
                 result.should.have.status(statusCodes.badRequest);
                 result.error.text.should.equal("listOfFeatures is a compulsory field");
+                done();
+            })
+            .catch(error => {
+                handleTestError(error);
+            });
+    });
+    it("ERROR: Duplicate entries in listOfFeatures not allowed", done => {
+        chai.request(app)
+            .post(`${route}`)
+            .send(invalidProduct4_duplicate_features)
+            .then(result => {
+                result.should.have.status(statusCodes.badRequest);
+                result.error.text.should.equal("Duplicate features found in listOfFeatures field");
                 done();
             })
             .catch(error => {

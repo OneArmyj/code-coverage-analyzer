@@ -44,7 +44,7 @@ router.post('/:product_id', checkProductExist, checkUniqueFeature, async (req, r
     try {
         await res.product.save();
         await feature.save();
-        const newFeature = await Feature.find({ _id: feature._id });
+        const newFeature = await Feature.findOne({ _id: feature._id });
         res.status(statusCodes.createContent).json(newFeature);
     } catch (err) {
         res.status(statusCodes.badRequest).send(err.message);
