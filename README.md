@@ -9,7 +9,6 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-<hr/>
 Code Coverage Analyzer is a full-stack web application developed to visualize and analyze code coverage data generated for AutoCAD vertical products.
 
 Frontend:
@@ -29,10 +28,10 @@ Testing:
 
 <!-- USEFUL LINKS -->
 ## Useful Links
-<hr/>
 
 * [Introduction to Vega-Lite](https://vega.github.io/vega-lite/tutorials/getting_started.html)
 * [Styling Vega-Lite Components](https://vega.github.io/vega-lite/docs/size.html)
+* [Customizing Vega-Lite Visualization](https://vega.github.io/vega/docs/config/)
 * [MongoDB CRUD Documentation](https://docs.mongodb.com/drivers/node/current/fundamentals/crud/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -40,8 +39,6 @@ Testing:
 
 <!-- GETTING STARTED -->
 ## Getting Started
-
-<hr/>
 
 ### Prerequisites
 
@@ -88,12 +85,16 @@ The scripts used to start frontend and backend can be configured by editing the 
 <!-- Backend API -->
 ## Backend API
 
-<hr/>
-
 There are 3 collections created: 
 * Products
 * Features
 * Testcases
+
+They are related and linked in the following way:
+* A Product has multiple Features (one-to-many)
+* A Feature belongs to 1 Product (many-to-one)
+* A Feature has multiple Testcases (one-to-many)
+* A Testcase belongs to 1 Feature and 1 Product (many-to-one)
 
 <hr/>
 
