@@ -32,6 +32,7 @@ Testing:
 * [Introduction to Vega-Lite](https://vega.github.io/vega-lite/tutorials/getting_started.html)
 * [Styling Vega-Lite Components](https://vega.github.io/vega-lite/docs/size.html)
 * [Customizing Vega-Lite Visualization](https://vega.github.io/vega/docs/config/)
+* [Installing MongoDB](https://docs.mongodb.com/manual/administration/install-community/)
 * [MongoDB CRUD Documentation](https://docs.mongodb.com/drivers/node/current/fundamentals/crud/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -47,6 +48,8 @@ Ensure you have NodeJS installed on your machine. Installing npm will install no
   ```sh
   npm install npm@latest -g
   ```
+
+Ensure you have MongoDB installed on your machine as well. Follow the link shared above.
 
 ### Installation
 
@@ -88,6 +91,8 @@ The scripts used to start frontend and backend can be configured by editing the 
 
 <!-- Backend API -->
 ## Backend API
+
+Backend API is built using ExpressJS for REST, and MongoDB running on the local machine (localhost port 5001)
 
 There are 3 collections created: 
 * Products
