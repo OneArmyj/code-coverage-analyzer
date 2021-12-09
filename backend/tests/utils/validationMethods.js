@@ -18,3 +18,17 @@ export function validateFeature(responseJson, feature) {
     responseJson.should.have.property("listOfTestcases");
     responseJson.name.should.equal(feature.name);
 }
+
+export function validateTestcase(arr, testcase) {
+    for (let i = 0; i < arr.length; i++) {
+        const responseJson = arr[i]
+        responseJson.should.have.property("product_id");
+        responseJson.should.have.property("feature_id");
+        responseJson.should.have.property("name");
+        responseJson.should.have.property("description");
+        responseJson.should.have.property("line_coverage");
+        responseJson.name.should.equal(testcase[i].name);
+        responseJson.description.should.equal(testcase[i].description);
+        responseJson.line_coverage.should.equal(testcase[i].line_coverage);
+    }
+}

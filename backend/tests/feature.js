@@ -19,7 +19,6 @@ const cleanup = async () => {
     await Testcase.deleteMany({});
     await Feature.deleteMany({});
     await Product.deleteMany({});
-
 };
 
 describe(`POST ${route}`, () => {

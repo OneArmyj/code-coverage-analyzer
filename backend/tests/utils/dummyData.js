@@ -51,3 +51,49 @@ export const validFeature1 = {
 export const validFeature2 = {
     name: "Door"
 };
+
+// TESTCASE DUMMY DATA
+export const validTestcase1 = {
+    "data": [
+        {
+            "name": "TestcaseA",
+            "feature": "Wall",
+            "description": "Testing API",
+            "line_coverage": 2.0
+        },
+        {
+            "name": "TestcaseB",
+            "feature": "Door",
+            "description": "Testing API",
+            "line_coverage": 4.0
+        },
+        {
+            "name": "TestcaseC",
+            "feature": "Room",
+            "description": "Testing API",
+            "line_coverage": 6.0
+        }
+    ]
+}
+
+export const validTestcase2 = {
+    "data": [
+        {
+            "name": "TestcaseD",
+            "feature": "Wall",
+            "description": "Testing API",
+            "line_coverage": 2.0
+        }
+    ]
+}
+
+export const invalidTestcase1_duplicate_test_name = {
+    "data": [
+        {
+            "name": "TestcaseA",
+            "feature": "Wall",
+            "description": "Testing API",
+            "line_coverage": 2.0
+        }
+    ]
+}

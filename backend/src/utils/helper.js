@@ -77,7 +77,7 @@ export async function checkUniqueTestcase(req, res, next) {
     const data = req.body.data;
     try {
         for (let i = 0; i < data.length; i++) {
-            const feature = await Feature.findOne({ name: data[i].feature });
+            const feature = await Feature.findOne({ product_id: req.params.product_id, name: data[i].feature });
             if (feature == null) {
                 return res.status(statusCodes.badRequest).send(`The feature (${data[i].feature}) specified in the testcase you want to add (${data[i].name}) does not exist`);
             }

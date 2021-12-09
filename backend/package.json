@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "A code coverage visualizer developed for AutoCAD products",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "mocha --require @babel/register tests/*.js --exit",
