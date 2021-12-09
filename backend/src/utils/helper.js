@@ -15,10 +15,10 @@ export async function checkProductExist(req, res, next) {
     try {
         product = await Product.findById(req.params.product_id);
         if (product == null) {
-            return res.status(statusCodes.notFound).json({ message: "Cannot find product data" });
+            return res.status(statusCodes.notFound).send("Cannot find product data");
         }
     } catch (err) {
-        return res.status(statusCodes.internalServerError).json({ message: err.message });
+        return res.status(statusCodes.internalServerError).send(err.message);
     }
     res.product = product;
     next();
@@ -31,10 +31,10 @@ export async function checkFeatureExist(req, res, next) {
     try {
         feature = await Feature.findById(req.params.feature_id);
         if (feature == null) {
-            return res.status(statusCodes.notFound).json({ message: "Cannot find feature data" });
+            return res.status(statusCodes.notFound).send("Cannot find feature data");
         }
     } catch (err) {
-        return res.status(statusCodes.internalServerError).json({ message: err.message });
+        return res.status(statusCodes.internalServerError).send(err.message);
     }
     res.feature = feature;
     next();
@@ -47,10 +47,10 @@ export async function checkTestcaseExist(req, res, next) {
     try {
         testcase = await Testcase.findById(req.params.testcase_id);
         if (testcase == null) {
-            return res.status(statusCodes.notFound).json({ message: "Cannot find testcase data" });
+            return res.status(statusCodes.notFound).send("Cannot find testcase data");
         }
     } catch (err) {
-        return res.status(statusCodes.internalServerError).json({ message: err.message });
+        return res.status(statusCodes.internalServerError).send(err.message);
     }
     res.testcase = testcase;
     next();
@@ -62,10 +62,10 @@ export async function checkUniqueFeature(req, res, next) {
     try {
         const exist = await Feature.findOne({ product_id: req.params.product_id, name: req.body.name });
         if (exist != null) {
-            return res.status(statusCodes.badRequest).json({ message: `The feature you want to add (${req.body.name}) already exists for the product (${res.product.name} - ${res.product.buildId})` });
+            return res.status(statusCodes.badRequest).send(`The feature you want to add (${req.body.name}) already exists for the product (${res.product.name} - ${res.product.buildId})`);
         }
     } catch (err) {
-        return res.status(statusCodes.internalServerError).json({ message: err.message });
+        return res.status(statusCodes.internalServerError).send(err.message);
     }
 
     next();
@@ -79,15 +79,15 @@ export async function checkUniqueTestcase(req, res, next) {
         for (let i = 0; i < data.length; i++) {
             const feature = await Feature.findOne({ name: data[i].feature });
             if (feature == null) {
-                return res.status(statusCodes.badRequest).json({ message: `The feature (${data[i].feature}) specified in the testcase you want to add (${data[i].name}) does not exist` });
+                return res.status(statusCodes.badRequest).send(`The feature (${data[i].feature}) specified in the testcase you want to add (${data[i].name}) does not exist`);
             }
             const exist = await Testcase.findOne({ name: data[i].name, feature_id: feature._id });
             if (exist != null) {
-                return res.status(statusCodes.badRequest).json({ message: `The testcase you want to add (${data[i].name}) already exists for the feature (${feature.name})` });
+                return res.status(statusCodes.badRequest).send(`The testcase you want to add (${data[i].name}) already exists for the feature (${feature.name})`);
             }
         }
     } catch (err) {
-        return res.status(statusCodes.internalServerError).json({ message: err.message });
+        return res.status(statusCodes.internalServerError).send(err.message);
     }
 
     next();

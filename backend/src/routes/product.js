@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
         const products = await Product.find().populate("listOfFeatures");
         res.status(statusCodes.ok).json(products);
     } catch (err) {
-        res.status(statusCodes.internalServerError).json({ message: err.message });
+        res.status(statusCodes.internalServerError).send(err.message);
     }
 });
 
@@ -31,13 +31,13 @@ router.post('/', async (req, res) => {
 
     // Checks if listOfFeatures is included in post request
     if (!req.body.hasOwnProperty("listOfFeatures")) {
-        res.status(statusCodes.badRequest).json({ message: "listOfFeatures is a compulsory field" });
+        res.status(statusCodes.badRequest).send("listOfFeatures is a compulsory field");
         return;
     }
 
     // check if req.body.listOfFeatures contain any duplicates
     if (checkIfDuplicateExists(req.body.listOfFeatures)) {
-        res.status(statusCodes.badRequest).json({ message: "Duplicate features found in listOfFeatures field" });
+        res.status(statusCodes.badRequest).send("Duplicate features found in listOfFeatures field");
         return;
     }
 
@@ -52,7 +52,7 @@ router.post('/', async (req, res) => {
         try {
             await feature.save();
         } catch (err) {
-            res.status(statusCodes.internalServerError).json({ message: err.message });
+            res.status(statusCodes.internalServerError).send(err.message);
         }
     });
 
@@ -60,7 +60,7 @@ router.post('/', async (req, res) => {
         const newProduct = await product.save();
         res.status(statusCodes.createContent).json(newProduct);
     } catch (err) {
-        res.status(statusCodes.badRequest).json({ message: err.message });
+        res.status(statusCodes.badRequest).send(err.message);
     }
 });
 
@@ -79,7 +79,7 @@ router.patch('/:product_id', checkProductExist, async (req, res) => {
         const updatedProduct = await res.product.save();
         res.status(statusCodes.ok).json(updatedProduct);
     } catch (err) {
-        res.status(statusCodes.badRequest).json({ message: err.message });
+        res.status(statusCodes.badRequest).send(err.message);
     }
 });
 
@@ -89,9 +89,9 @@ router.delete('/', async (req, res) => {
         await Testcase.deleteMany({});
         await Feature.deleteMany({});
         await Product.deleteMany({});
-        res.status(statusCodes.ok).json({ message: "Deleted all product data" });
+        res.status(statusCodes.ok).send("Deleted all product data");
     } catch (err) {
-        res.status(statusCodes.internalServerError).json({ message: err.message });
+        res.status(statusCodes.internalServerError).send(err.message);
     }
 });
 
@@ -101,9 +101,9 @@ router.delete('/:product_id', checkProductExist, async (req, res) => {
         await Testcase.deleteMany({ product_id: req.params.product_id });
         await Feature.deleteMany({ product_id: req.params.product_id });
         const deletedProduct = await res.product.remove();
-        res.status(statusCodes.ok).json({ message: `Deleted product (${deletedProduct.name} - ${deletedProduct.buildId}) data` });
+        res.status(statusCodes.ok).send(`Deleted product (${deletedProduct.name} - ${deletedProduct.buildId}) data`);
     } catch (err) {
-        res.status(statusCodes.internalServerError).json({ message: err.message });
+        res.status(statusCodes.internalServerError).send(err.message);
     }
 });
 

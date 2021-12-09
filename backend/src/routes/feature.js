@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
         const features = await Feature.find();
         res.status(statusCodes.ok).json(features);
     } catch (err) {
-        res.status(statusCodes.internalServerError).json({ message: err.message });
+        res.status(statusCodes.internalServerError).send(err.message);
     }
 });
 
@@ -23,7 +23,7 @@ router.get('/product/:product_id', checkProductExist, async (req, res) => {
         const features = await Feature.find({ product_id: res.product._id });
         res.status(statusCodes.ok).json(features);
     } catch (err) {
-        res.status(statusCodes.internalServerError).json({ message: err.message });
+        res.status(statusCodes.internalServerError).send(err.message);
     }
 });
 
@@ -47,7 +47,7 @@ router.post('/:product_id', checkProductExist, checkUniqueFeature, async (req, r
         const newFeature = await Feature.find({ _id: feature._id });
         res.status(statusCodes.createContent).json(newFeature);
     } catch (err) {
-        res.status(statusCodes.badRequest).json({ message: err.message });
+        res.status(statusCodes.badRequest).send(err.message);
     }
 });
 
@@ -57,9 +57,9 @@ router.delete('/product/:product_id', checkProductExist, async (req, res) => {
         await Product.updateOne({ _id: req.params.product_id }, { $set: { listOfFeatures: [] } });
         await Testcase.deleteMany({ product_id: req.params.product_id });
         await Feature.deleteMany({ product_id: req.params.product_id });
-        res.status(statusCodes.ok).json({ message: `Deleted all feature data related to the specific product (${res.product.name})` });
+        res.status(statusCodes.ok).send(`Deleted all feature data related to the specific product (${res.product.name})`);
     } catch (err) {
-        res.status(statusCodes.internalServerError).json({ message: err.message });
+        res.status(statusCodes.internalServerError).send(err.message);
     }
 });
 
@@ -76,9 +76,9 @@ router.delete('/:feature_id', checkFeatureExist, async (req, res) => {
 
         // Update Feature
         const removedFeature = await res.feature.remove();
-        res.status(statusCodes.ok).json({ message: `Deleted feature (${removedFeature.name}) data` });
+        res.status(statusCodes.ok).send(`Deleted feature (${removedFeature.name}) data`);
     } catch (err) {
-        res.status(statusCodes.internalServerError).json({ message: err.message });
+        res.status(statusCodes.internalServerError).send(err.message);
     }
 });
 

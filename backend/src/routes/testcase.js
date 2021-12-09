@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
         const testcases = await Testcase.find();
         res.status(statusCodes.ok).json(testcases);
     } catch (err) {
-        res.status(statusCodes.internalServerError).json({ message: err.message });
+        res.status(statusCodes.internalServerError).send(err.message);
     }
 });
 
@@ -23,7 +23,7 @@ router.get('/product/:product_id', checkProductExist, async (req, res) => {
         const testcases = await Testcase.find({ product_id: res.product._id });
         res.status(statusCodes.ok).json(testcases);
     } catch (err) {
-        res.status(statusCodes.internalServerError).json({ message: err.message });
+        res.status(statusCodes.internalServerError).send(err.message);
     }
 });
 
@@ -33,7 +33,7 @@ router.get('/feature/:feature_id', checkFeatureExist, async (req, res) => {
         const testcases = await Testcase.find({ feature_id: res.feature._id });
         res.status(statusCodes.ok).json(testcases);
     } catch (err) {
-        res.status(statusCodes.internalServerError).json({ message: err.message });
+        res.status(statusCodes.internalServerError).send(err.message);
     }
 });
 
@@ -65,7 +65,7 @@ router.post('/:product_id', checkProductExist, checkUniqueTestcase, async (req, 
             await feature_to_update.save();
             newTestcases.push(await testcase.save());
         } catch (err) {
-            res.status(statusCodes.badRequest).json({ message: err.message });
+            res.status(statusCodes.badRequest).send(err.message);
         }
     }
 
@@ -87,7 +87,7 @@ router.patch('/:testcase_id', checkTestcaseExist, async (req, res) => {
         const updatedTestcase = await res.testcase.save();
         res.status(statusCodes.ok).json(updatedTestcase);
     } catch (err) {
-        res.status(statusCodes.badRequest).json({ message: err.message });
+        res.status(statusCodes.badRequest).send(err.message);
     }
 });
 
@@ -96,9 +96,9 @@ router.delete('/product/:product_id', checkProductExist, async (req, res) => {
     try {
         await Testcase.deleteMany({ product: req.params.product_id });
         await Feature.updateMany({ product_id: req.params.product_id }, { $set: { feature_coverage: 0, listOfTestcases: [] } });
-        res.status(statusCodes.ok).json({ message: "Deleted all testcase data related to the specific Product" });
+        res.status(statusCodes.ok).send("Deleted all testcase data related to the specific Product");
     } catch (err) {
-        res.status(statusCodes.internalServerError).json({ message: err.message });
+        res.status(statusCodes.internalServerError).send(err.message);
     }
 });
 
@@ -110,9 +110,9 @@ router.delete('/:testcase_id', checkTestcaseExist, async (req, res) => {
         feature_to_update.feature_coverage -= res.testcase.line_coverage;
         await feature_to_update.save();
         await res.testcase.remove();
-        res.status(statusCodes.ok).json({ message: "Deleted testcase data" });
+        res.status(statusCodes.ok).send("Deleted testcase data");
     } catch (err) {
-        res.status(statusCodes.internalServerError).json({ message: err.message });
+        res.status(statusCodes.internalServerError).send(err.message);
     }
 });
 

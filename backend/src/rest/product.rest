@@ -18,7 +18,7 @@ Content-Type: application/json
 DELETE http://localhost:5001/product
 
 ###
-DELETE http://localhost:5001/product/61a46f26a46904fb2704a72c
+DELETE http://localhost:5001/product/61b1bb891f164d8686781d3b
 
 ###
 PATCH  http://localhost:5001/product/61a733447e57e3d62d9412b5
