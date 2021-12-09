@@ -71,13 +71,16 @@ export async function checkUniqueFeature(req, res, next) {
     next();
 }
 
-// Check if there is an existing testcase_name in the feature document
+// Check if the feature specified exists, and that there is an existing testcase_name in the feature document
 // Used in post method for testcase
 export async function checkUniqueTestcase(req, res, next) {
     const data = req.body.data;
     try {
         for (let i = 0; i < data.length; i++) {
             const feature = await Feature.findOne({ name: data[i].feature });
+            if (feature == null) {
+                return res.status(statusCodes.badRequest).json({ message: `The feature (${data[i].feature}) specified in the testcase you want to add (${data[i].name}) does not exist` });
+            }
             const exist = await Testcase.findOne({ name: data[i].name, feature_id: feature._id });
             if (exist != null) {
                 return res.status(statusCodes.badRequest).json({ message: `The testcase you want to add (${data[i].name}) already exists for the feature (${feature.name})` });
