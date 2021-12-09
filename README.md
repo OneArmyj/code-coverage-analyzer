@@ -56,11 +56,15 @@ Ensure you have NodeJS installed on your machine. Installing npm will install no
    ```
 2. Install NPM packages for root, frontend and backend folders
    ```sh
-   npm run postinstall
+   # Run npm i on root
+   # Navigate to /frontend and run npm i
+   # Navigate to /backend and run npm i
+   # Recommend to use Docker-compose to containerize frontend and backend environment
+   npm i
    ```
 3. Start up both frontend and backend
    ```sh
-   npm run dev
+   npm run app
    ```
 4. You can also choose to start up frontend and backend individually, using 2 bash sessions
    ```sh
@@ -462,4 +466,7 @@ DELETE http://localhost:5001/testcase/product/61adb7a2a5fc1368019091b8
 ```
 </details>
 
+<!-- Frontend -->
+## Frontend
 
+Yet to integrate Backend API routes to the Frontend.
